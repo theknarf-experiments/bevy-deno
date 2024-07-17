@@ -1,0 +1,23 @@
+[package]
+name = "bevy-deno"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bevy = "0.14.0"
+deno_core = "0.294.0"
+tokio = { version = "1", features = ["full"] }
+anyhow = "1"
+futures = "0.3.21"
+
+
+[workspace]
+resolver = "2" # Important! wgpu/Bevy needs this!
+
+# Enable a small amount of optimization in the dev profile.
+[profile.dev]
+opt-level = 1
+
+# Enable a large amount of optimization in the dev profile for dependencies.
+[profile.dev.package."*"]
+opt-level = 3
