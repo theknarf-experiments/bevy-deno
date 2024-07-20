@@ -41,9 +41,18 @@ fn js_runner_system(query: Query<&JSModule>) {
   }
 }
 
+pub struct JSRuntimePlugin;
+
+impl Plugin for JSRuntimePlugin {
+  fn build(&self, app: &mut App) {
+    app.add_systems(Update, js_runner_system);
+  }
+}
+
 fn main() {
   App::new()
     .add_plugins(MinimalPlugins)
+    .add_plugins(JSRuntimePlugin)
     .add_systems(Startup, |mut commands: Commands| {
       commands.spawn(JSModule {
         name: "test.js".to_string(),
@@ -51,9 +60,8 @@ fn main() {
       });
       commands.spawn(JSModule {
         name: "test2.js".to_string(),
-        code: "console.log('hihi');".to_string(),
+        code: "await (async () => console.log('hihi'))()".to_string(),
       });
     })
-    .add_systems(Update, js_runner_system)
     .run();
 }
